@@ -41,9 +41,11 @@ export const ContextWrapper = ({ children }) => {
         };
 
         useEffect(() => {
-            getCharacters(1, '', '');
+            setTimeout(() => {
+                getCharacters(1, '', '');
+            }, 1000)
         }, []);
-        
+
     return <Context.Provider value={{ listCharacters }}>
                 {children }
             </Context.Provider>

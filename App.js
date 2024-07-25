@@ -1,12 +1,13 @@
 import { ContextWrapper } from './src/Context/Context';
-import MainPage from './src/pages/MainPage/MainPage';
+import Footer from './src/components/Footer/Footer';
+import StackNavigation from './src/navigation/navigate';
 
 
 export default function App() {
 
 	return (
 		<ContextWrapper>
-			<MainPage/>
+			<StackNavigation/>
 		</ContextWrapper>
 	);
 }
