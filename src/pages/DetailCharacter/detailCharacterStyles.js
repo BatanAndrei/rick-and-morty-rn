@@ -11,7 +11,14 @@ wrapperPage: {
     padding: 15,
     backgroundColor: 'black'
 },
+avatar: {
+    width: 300,
+    height: 300,
+    borderRadius: 10
+},
 text: {
-    color: 'white'
+    marginTop: 10,
+    color: 'white',
+    fontSize: 25
 }
 });

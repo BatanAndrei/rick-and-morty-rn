@@ -15,8 +15,7 @@ export default function Navigate() {
                         component={MainPage}
                         options={
                             {
-                            title: 'Main',
-                            headerStyle: { height: 0 },
+                                headerShown: false
                             }
                         }
                     />
@@ -25,7 +24,7 @@ export default function Navigate() {
                         component={SettingPage}
                         options={
                             {
-                            headerShown: false
+                                headerShown: false
                             }
                         }
                     />
@@ -34,7 +33,7 @@ export default function Navigate() {
                         component={DetailCharacter}
                         options={
                             {
-                            headerShown: false
+                                headerShown: false
                             }
                         }
                     />
