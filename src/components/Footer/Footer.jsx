@@ -1,4 +1,4 @@
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { styles } from './footerStyles';
 
 
@@ -14,16 +14,16 @@ const Footer = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <TouchableHighlight onPress={loadMainPage}>
+            <TouchableWithoutFeedback onPress={loadMainPage}>
                 <View style={styles.touchArea}>
                     <Text style={styles.text}>Main</Text>
                 </View>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={loadSettingPage}>
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback onPress={loadSettingPage}>
                 <View style={styles.touchArea}>
                     <Text style={styles.text}>Setting</Text>
                 </View>
-            </TouchableHighlight>
+            </TouchableWithoutFeedback>
 		</View>
     )
 };

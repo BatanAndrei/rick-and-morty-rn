@@ -10,5 +10,8 @@ wrapperPage: {
     alignItems: 'center',
     padding: 15,
     backgroundColor: 'black'
+},
+text: {
+    color: 'white'
 }
 });

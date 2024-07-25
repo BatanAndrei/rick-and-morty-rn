@@ -18,7 +18,7 @@ const MainPage = ({ navigation }) => {
 			<Loader/> :
 			<View style={styles.wrapperPage}>
 				<FlatList data={listCharacters} renderItem={({ item }) => (
-					<ListCharacters item={item}/>
+					<ListCharacters navigation={navigation} item={item}/>
 				)}/>
 			</View>}
 			<Footer navigation={navigation}/>

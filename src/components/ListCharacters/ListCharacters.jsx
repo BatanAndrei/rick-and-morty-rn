@@ -2,9 +2,10 @@ import { Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { styles } from './listCharacterStyles';
 
 
-const ListCharacters = ({ item }) => {
+const ListCharacters = ({ item, navigation }) => {
+
     return (
-        <TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => navigation.navigate('DetailCharacter', item) }>
 			<View style={styles.wrapperCard}>
 				<View style={styles.wrapperAvatar}>
 					<Image 
