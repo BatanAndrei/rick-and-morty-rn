@@ -1,6 +1,7 @@
 import { View, ActivityIndicator, Text } from 'react-native';
 import { styles } from './loaderStyles';
 
+
 const Loader = () => {
     return (
         <View style={styles.loader}>

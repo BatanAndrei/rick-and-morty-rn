@@ -4,9 +4,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from './dropdownStyles';
     
 
-const DropdownComponent = ({ dataListStatusAndSpecies, lableForDropdown, getDropdownValue, value }) => {
+const DropdownComponent = ({ dataListStatusAndSpecies, lableForDropdown, getDropdownValue }) => {
 
-console.log(value)
     const renderItem = item => {
     return (
         <View style={styles.item}>
@@ -22,10 +21,10 @@ console.log(value)
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             data={dataListStatusAndSpecies}
-            labelField="label"
-            valueField="value"
+            labelField='label'
+            valueField='value'
             placeholder={lableForDropdown}
-            value={'value'}
+            value='value'
             onChange={(e) => getDropdownValue(e)}
             renderItem={renderItem}
         />

@@ -1,50 +1,29 @@
 import { createContext, useContext, useState, useEffect } from "react"; 
-import axios from "axios";
+import { getCharacters } from '../api/getCharacters';
 
 
 const context = {
     dataCharacters: [], 
     getDropdownStatus: () => {}, 
-    getDropdownSpecies: () => {}
+    getDropdownSpecies: () => {},
+    loadingMoreCharacters: () => {}
 };
 
 export const Context = createContext(context);
 export const useGlobalContext = () => useContext(Context);
 
-const characters = axios.create({
-    baseURL: `https://rickandmortyapi.com/api/character/`,
-});
-
 
 export const ContextWrapper = ({ children }) => {
 
+    const [isLoading, setIsLoading] = useState(true);
     const [listCharacters, setListCharacters] = useState([]);
     const [selectedStatusCharacter, setSelectedStatusCharacter] = useState('');
     const [selectedSpeciesCharacter, setSelectedSpeciesCharacter] = useState('');
     const [numberPage, setNumberPage] = useState(1);
-    
+
     const saveStorage = (keyName, valueName) => {
         localStorage.setItem(keyName, JSON.stringify(valueName));
     };
-
-    const getCharacters = async (numberPage, statusCharacter, speciesCharacter) => { 
-
-        try {
-                const response = await characters.get(`/?page=${numberPage}&status=${statusCharacter}&species=${speciesCharacter}`);
-        
-                if(response.status !== 200) {
-                    throw new Error('Something went wrong!');
-                }
-                
-                const data = response;
-                    setListCharacters(data.data.results);
-
-                return data;
-        
-        }catch(err) {
-            console.error(err.message)
-                }
-        };
 
         const getDropdownStatus = (e) => {
             setSelectedStatusCharacter(e.label);
@@ -61,12 +40,19 @@ export const ContextWrapper = ({ children }) => {
             };
 
         useEffect(() => {
-            setTimeout(() => {
-                getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter);
-            }, 1000)
-        }, [numberPage, selectedStatusCharacter, selectedSpeciesCharacter]);
+            getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter).then(newCharacter => {
+                setListCharacters(newCharacter.data.results);
+                setIsLoading(false);
+            });
+        }, [selectedStatusCharacter, selectedSpeciesCharacter]);
 
-    return <Context.Provider value={{ listCharacters, getDropdownStatus, getDropdownSpecies, selectedStatusCharacter, selectedSpeciesCharacter }}>
+        const loadingMoreCharacters = async () => {
+            const newCharacters = await getCharacters((listCharacters.length / 20) + 1, selectedStatusCharacter, selectedSpeciesCharacter);
+            const moreCharacter = newCharacters.data.results;
+            setListCharacters(prevCharacters => [...prevCharacters, ...moreCharacter]);
+        };
+
+    return <Context.Provider value={{ listCharacters, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters }}>
                 {children }
             </Context.Provider>
 }

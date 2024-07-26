@@ -11,30 +11,31 @@ import { dataStatusCharacter, dataSpeciesCharacter, lableForDropdownStatus, labl
 
 const MainPage = ({ navigation }) => {
 
-	const { listCharacters, getDropdownStatus, getDropdownSpecies, selectedStatusCharacter, selectedSpeciesCharacter } = useGlobalContext();
+	const { listCharacters, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters } = useGlobalContext();
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style='auto'/>
-			{!listCharacters.length ? 
+			{isLoading ? 
 			<Loader/> :
 			<View style={styles.wrapperPage}>
 				<View style={styles.wrapperDropdownInput}>
 					<DropdownComponent 
-						value={selectedStatusCharacter} 
 						getDropdownValue={getDropdownStatus} 
 						lableForDropdown={lableForDropdownStatus} 
 						dataListStatusAndSpecies={dataStatusCharacter}
 					/>
 					<DropdownComponent 
-						value={selectedSpeciesCharacter} 
 						getDropdownValue={getDropdownSpecies} 
 						lableForDropdown={lableForDropdownSpecies} 
 						dataListStatusAndSpecies={dataSpeciesCharacter}
 					/>
 				</View>
 				<FlatList 
-					data={listCharacters} 
+					data={listCharacters}
+					onEndReached={loadingMoreCharacters}
+					onEndReachedThreshold={0}
+					keyExtractor={(item, index) => index}
 					renderItem={({ item }) => (
 					<ListCharacters navigation={navigation} item={item}/>
 				)}/>
