@@ -3,7 +3,9 @@ import axios from "axios";
 
 
 const context = {
-    dataCharacters: [],
+    dataCharacters: [], 
+    getDropdownStatus: () => {}, 
+    getDropdownSpecies: () => {}
 };
 
 export const Context = createContext(context);
@@ -17,7 +19,10 @@ const characters = axios.create({
 export const ContextWrapper = ({ children }) => {
 
     const [listCharacters, setListCharacters] = useState([]);
-
+    const [selectedStatusCharacter, setSelectedStatusCharacter] = useState('');
+    const [selectedSpeciesCharacter, setSelectedSpeciesCharacter] = useState('');
+    const [numberPage, setNumberPage] = useState(1);
+    
     const saveStorage = (keyName, valueName) => {
         localStorage.setItem(keyName, JSON.stringify(valueName));
     };
@@ -32,7 +37,8 @@ export const ContextWrapper = ({ children }) => {
                 }
                 
                 const data = response;
-                setListCharacters(data.data.results);
+                    setListCharacters(data.data.results);
+
                 return data;
         
         }catch(err) {
@@ -40,13 +46,27 @@ export const ContextWrapper = ({ children }) => {
                 }
         };
 
+        const getDropdownStatus = (e) => {
+            setSelectedStatusCharacter(e.label);
+
+                if(e.label === 'All status') 
+                    setSelectedStatusCharacter('');
+            };
+
+        const getDropdownSpecies = (e) => {
+            setSelectedSpeciesCharacter(e.label);
+
+                if(e.label === 'All species') 
+                    setSelectedSpeciesCharacter('');
+            };
+
         useEffect(() => {
             setTimeout(() => {
-                getCharacters(1, '', '');
+                getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter);
             }, 1000)
-        }, []);
+        }, [numberPage, selectedStatusCharacter, selectedSpeciesCharacter]);
 
-    return <Context.Provider value={{ listCharacters }}>
+    return <Context.Provider value={{ listCharacters, getDropdownStatus, getDropdownSpecies, selectedStatusCharacter, selectedSpeciesCharacter }}>
                 {children }
             </Context.Provider>
 }

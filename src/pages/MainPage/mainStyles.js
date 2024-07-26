@@ -11,5 +11,8 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 15,
 		backgroundColor: 'black'
+	},
+	wrapperDropdownInput: {
+		flexDirection: 'row'
 	}
 });
