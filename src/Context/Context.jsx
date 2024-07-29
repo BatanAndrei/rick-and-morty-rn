@@ -1,5 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react"; 
 import { getCharacters } from '../api/getCharacters';
+import NetInfo from "@react-native-community/netinfo";
+import RNRestart from 'react-native-restart';
+import { Alert } from "react-native";
 
 
 const context = {
@@ -19,7 +22,23 @@ export const ContextWrapper = ({ children }) => {
     const [listCharacters, setListCharacters] = useState([]);
     const [selectedStatusCharacter, setSelectedStatusCharacter] = useState('');
     const [selectedSpeciesCharacter, setSelectedSpeciesCharacter] = useState('');
-    const [numberPage, setNumberPage] = useState(1);
+
+    let numberPage = 1;
+
+    const unsubscribe = NetInfo.addEventListener((state) => {
+        if(state.isConnected === false) {
+            Alert.alert("No internet", "Please check your internet connection and try again", [{
+                text: "Try again", 
+                onPress: () => RNRestart.restart()
+            }])
+        }else if (state.isConnected === true) {
+        
+        }
+    });
+
+    useEffect(() => {
+        unsubscribe();
+    }, []);
 
     const saveStorage = (keyName, valueName) => {
         localStorage.setItem(keyName, JSON.stringify(valueName));
@@ -44,10 +63,11 @@ export const ContextWrapper = ({ children }) => {
                 setListCharacters(newCharacter.data.results);
                 setIsLoading(false);
             });
-        }, [selectedStatusCharacter, selectedSpeciesCharacter]);
+        }, [selectedStatusCharacter, selectedSpeciesCharacter, unsubscribe]);
 
         const loadingMoreCharacters = async () => {
-            const newCharacters = await getCharacters((listCharacters.length / 20) + 1, selectedStatusCharacter, selectedSpeciesCharacter);
+            numberPage = (listCharacters.length / 20) + 1;
+            const newCharacters = await getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter);
             const moreCharacter = newCharacters.data.results;
             setListCharacters(prevCharacters => [...prevCharacters, ...moreCharacter]);
         };
