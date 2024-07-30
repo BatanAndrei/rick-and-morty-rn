@@ -2,9 +2,16 @@ import { StyleSheet } from 'react-native';
 
 
 export const styles = StyleSheet.create({
-	container: {
+	containerDark: {
         height: 50,
         backgroundColor: '#434B4D',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    containerLight: {
+        height: 50,
+        backgroundColor: '#9da19f',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -12,10 +19,14 @@ export const styles = StyleSheet.create({
     arrowIcon: {
         width: 25,
         height: 25,
-        marginLeft: 10
+        marginLeft: 10,
     },
-    mameCharacter: {
+    mameCharacterDark: {
         color: 'white',
+        fontSize: 20
+    },
+    mameCharacterLight: {
+        color: 'black',
         fontSize: 20
     }
 });

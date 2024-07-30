@@ -6,11 +6,17 @@ export const styles = StyleSheet.create({
 		flex: 1,
 		paddingTop: Platform.OS === 'android' ? 25 : 0
 	},
-	wrapperPage: {
+	wrapperPageDark: {
 		flex: 1,
 		alignItems: 'center',
 		padding: 15,
 		backgroundColor: 'black'
+	},
+	wrapperPageLight: {
+		flex: 1,
+		alignItems: 'center',
+		padding: 15,
+		backgroundColor: '#cfd1d0'
 	},
 	wrapperDropdownInput: {
 		flexDirection: 'row'

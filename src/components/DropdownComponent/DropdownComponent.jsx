@@ -2,23 +2,26 @@ import { useState } from 'react';
 import { View, Text } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { styles } from './dropdownStyles';
+import { useGlobalContext  } from '../../Context/Context';
     
 
 const DropdownComponent = ({ dataListStatusAndSpecies, lableForDropdown, getDropdownValue }) => {
 
+    const { otherTheme } = useGlobalContext();
+
     const renderItem = item => {
     return (
-        <View style={styles.item}>
-            <Text style={styles.textItem}>{item.label}</Text>
+        <View style={otherTheme ? styles.itemLight : styles.itemDark}>
+            <Text style={otherTheme ? styles.textItemLight : styles.textItemDark}>{item.label}</Text>
         </View>
         );
     };
 
     return (
         <Dropdown
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
+            style={otherTheme ? styles.dropdownLight : styles.dropdownDark}
+            placeholderStyle={otherTheme ? styles.placeholderStyleLight : styles.placeholderStyleDark}
+            selectedTextStyle={otherTheme ? styles.selectedTextStyleLight : styles.selectedTextStyleDark}
             inputSearchStyle={styles.inputSearchStyle}
             data={dataListStatusAndSpecies}
             labelField='label'

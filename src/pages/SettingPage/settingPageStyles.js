@@ -5,13 +5,26 @@ container: {
     flex: 1,
     paddingTop: Platform.OS === 'android' ? 25 : 0
 },
-wrapperPage: {
+wrapperPageDark: {
     flex: 1,
     alignItems: 'center',
     padding: 15,
     backgroundColor: 'black'
 },
-text: {
-    color: 'white'
+wrapperPageLight: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: '#d4d9d7'
+},
+textLight: {
+    top: 200,
+    color: 'black',
+    fontSize: 22
+},
+textDark: {
+    top: 200,
+    color: 'white',
+    fontSize: 22
 }
 });

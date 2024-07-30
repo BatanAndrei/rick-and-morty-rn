@@ -2,9 +2,15 @@ import { StyleSheet } from 'react-native';
 
 
 export const styles = StyleSheet.create({
-	wrapperCard: {
+	wrapperCardDark: {
 		flexDirection: 'row',
 		backgroundColor: '#434B4D',
+		borderRadius: 10,
+		marginBottom: 15
+	},
+	wrapperCardLight: {
+		flexDirection: 'row',
+		backgroundColor: '#757877',
 		borderRadius: 10,
 		marginBottom: 15
 	},

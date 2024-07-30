@@ -3,13 +3,15 @@ import { getCharacters } from '../api/getCharacters';
 import NetInfo from "@react-native-community/netinfo";
 import RNRestart from 'react-native-restart';
 import { Alert } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const context = {
     dataCharacters: [], 
     getDropdownStatus: () => {}, 
     getDropdownSpecies: () => {},
-    loadingMoreCharacters: () => {}
+    loadingMoreCharacters: () => {},
+    toggleOtherTheme: () => {}
 };
 
 export const Context = createContext(context);
@@ -22,6 +24,38 @@ export const ContextWrapper = ({ children }) => {
     const [listCharacters, setListCharacters] = useState([]);
     const [selectedStatusCharacter, setSelectedStatusCharacter] = useState('');
     const [selectedSpeciesCharacter, setSelectedSpeciesCharacter] = useState('');
+    const [otherTheme, setOtherTheme] = useState(true);
+
+
+        const getStoreData = async () => {
+            try {
+                const otherThemeGet = await AsyncStorage.getItem('otherTheme');
+                if(otherThemeGet !== null) {
+                setOtherTheme(JSON.parse(otherThemeGet));
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        };
+    
+        const setStoreData = async () => {
+            try {
+                await AsyncStorage.setItem('otherTheme', JSON.stringify(!otherTheme));
+                
+            } catch (e) {
+                console.log(e);
+            }
+        };
+    
+    const toggleOtherTheme = () => {
+        setStoreData();
+        setOtherTheme(otherTheme => !otherTheme);
+    };
+    const clearAllData = () => {
+        AsyncStorage.getAllKeys()
+            .then(keys => AsyncStorage.multiRemove(keys))
+            .then(() => alert('success'));
+    }
 
     let numberPage = 1;
 
@@ -38,11 +72,9 @@ export const ContextWrapper = ({ children }) => {
 
     useEffect(() => {
         unsubscribe();
+        getStoreData();
+        //clearAllData();
     }, []);
-
-    const saveStorage = (keyName, valueName) => {
-        localStorage.setItem(keyName, JSON.stringify(valueName));
-    };
 
         const getDropdownStatus = (e) => {
             setSelectedStatusCharacter(e.label);
@@ -63,7 +95,7 @@ export const ContextWrapper = ({ children }) => {
                 setListCharacters(newCharacter.data.results);
                 setIsLoading(false);
             });
-        }, [selectedStatusCharacter, selectedSpeciesCharacter, unsubscribe]);
+        }, [selectedStatusCharacter, selectedSpeciesCharacter]);
 
         const loadingMoreCharacters = async () => {
             numberPage = (listCharacters.length / 20) + 1;
@@ -72,7 +104,7 @@ export const ContextWrapper = ({ children }) => {
             setListCharacters(prevCharacters => [...prevCharacters, ...moreCharacter]);
         };
 
-    return <Context.Provider value={{ listCharacters, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters }}>
+    return <Context.Provider value={{ listCharacters, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, toggleOtherTheme, otherTheme }}>
                 {children }
             </Context.Provider>
 }

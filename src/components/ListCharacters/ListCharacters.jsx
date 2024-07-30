@@ -1,12 +1,15 @@
 import { Text, View, Image, TouchableWithoutFeedback } from 'react-native';
 import { styles } from './listCharacterStyles';
+import { useGlobalContext  } from '../../Context/Context';
 
 
 const ListCharacters = ({ item, navigation }) => {
 
+	const { otherTheme } = useGlobalContext();
+
     return (
         <TouchableWithoutFeedback onPress={() => navigation.navigate('DetailCharacter', item) }>
-			<View style={styles.wrapperCard}>
+			<View style={otherTheme ? styles.wrapperCardLight : styles.wrapperCardDark}>
 				<View style={styles.wrapperAvatar}>
 					<Image 
 					style={styles.avatar} 

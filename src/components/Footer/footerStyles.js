@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
-    touchArea: {
+    touchAreaDark: {
         width: 150,
         height: 50,
         borderRadius: 10,
@@ -16,8 +16,20 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#434B4D'
     },
-    text: {
+    touchAreaLight: {
+        width: 150,
+        height: 50,
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#c5c9c8'
+    },
+    textDark: {
         color: 'white',
+        fontSize: 20
+    },
+    textLight: {
+        color: 'black',
         fontSize: 20
     }
 });

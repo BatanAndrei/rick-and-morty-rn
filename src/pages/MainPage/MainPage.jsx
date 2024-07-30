@@ -11,14 +11,14 @@ import { dataStatusCharacter, dataSpeciesCharacter, lableForDropdownStatus, labl
 
 const MainPage = ({ navigation }) => {
 
-	const { listCharacters, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters } = useGlobalContext();
+	const { listCharacters, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, otherTheme } = useGlobalContext();
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style='auto'/>
 			{isLoading ? 
 			<Loader/> :
-			<View style={styles.wrapperPage}>
+			<View style={otherTheme ? styles.wrapperPageLight : styles.wrapperPageDark}>
 				<View style={styles.wrapperDropdownInput}>
 					<DropdownComponent 
 						getDropdownValue={getDropdownStatus} 
