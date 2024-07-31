@@ -5,7 +5,7 @@ import { styles } from './dropdownStyles';
 import { useGlobalContext  } from '../../Context/Context';
     
 
-const DropdownComponent = ({ dataListStatusAndSpecies, lableForDropdown, getDropdownValue }) => {
+const DropdownComponent = ({ dataListStatusAndSpecies, labelForDropdown, getDropdownValue }) => {
 
     const { otherTheme } = useGlobalContext();
 
@@ -26,7 +26,7 @@ const DropdownComponent = ({ dataListStatusAndSpecies, lableForDropdown, getDrop
             data={dataListStatusAndSpecies}
             labelField='label'
             valueField='value'
-            placeholder={lableForDropdown}
+            placeholder={labelForDropdown}
             value='value'
             onChange={(e) => getDropdownValue(e)}
             renderItem={renderItem}

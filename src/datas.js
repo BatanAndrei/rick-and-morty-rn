@@ -11,5 +11,5 @@ export const dataSpeciesCharacter = [
     { label: 'All species', value: '4' },
 ];
 
-export const lableForDropdownStatus = 'All status';
-export const lableForDropdownSpecies = 'All species';
+export const labelForDropdownStatus = 'All status';
+export const labelForDropdownSpecies = 'All species';

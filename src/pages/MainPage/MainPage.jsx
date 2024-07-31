@@ -6,7 +6,7 @@ import { styles } from './mainStyles';
 import Loader from '../../components/Loader/Loader';
 import Footer from '../../components/Footer/Footer';
 import DropdownComponent from '../../components/DropdownComponent/DropdownComponent';
-import { dataStatusCharacter, dataSpeciesCharacter, lableForDropdownStatus, lableForDropdownSpecies } from '../../datas';
+import { dataStatusCharacter, dataSpeciesCharacter, labelForDropdownStatus, labelForDropdownSpecies } from '../../datas';
 
 
 const MainPage = ({ navigation }) => {
@@ -16,18 +16,18 @@ const MainPage = ({ navigation }) => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<StatusBar style='auto'/>
-			{isLoading ? 
-			<Loader/> :
+			{isLoading && 
+			<Loader/>}
 			<View style={otherTheme ? styles.wrapperPageLight : styles.wrapperPageDark}>
 				<View style={styles.wrapperDropdownInput}>
 					<DropdownComponent 
 						getDropdownValue={getDropdownStatus} 
-						lableForDropdown={lableForDropdownStatus} 
+						labelForDropdown={labelForDropdownStatus} 
 						dataListStatusAndSpecies={dataStatusCharacter}
 					/>
 					<DropdownComponent 
 						getDropdownValue={getDropdownSpecies} 
-						lableForDropdown={lableForDropdownSpecies} 
+						labelForDropdown={labelForDropdownSpecies} 
 						dataListStatusAndSpecies={dataSpeciesCharacter}
 					/>
 				</View>
@@ -39,7 +39,7 @@ const MainPage = ({ navigation }) => {
 					renderItem={({ item }) => (
 					<ListCharacters navigation={navigation} item={item}/>
 				)}/>
-			</View>}
+			</View>
 			<Footer navigation={navigation}/>
 		</SafeAreaView>
 	);

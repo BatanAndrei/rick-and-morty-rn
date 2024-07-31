@@ -19,7 +19,23 @@ export const getCharacters = async (numberPage, statusCharacter, speciesCharacte
 
             return data;
     
-    }catch(err) {
-        console.error(err.message)
-            }
+    }catch(error) {
+        if (error.response) {
+        
+            const { data, status, headers } = error.response
+
+            console.error(data);
+
+        } else if (error.request) {
+            
+            console.error(error.request)
+        } else {
+            
+            console.error(error.message)
+        }
+        
+            console.error(error.config)
+    
+            console.error(error.toJSON())
+        }
     };

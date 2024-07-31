@@ -26,8 +26,9 @@ export const ContextWrapper = ({ children }) => {
     const [selectedSpeciesCharacter, setSelectedSpeciesCharacter] = useState('');
     const [otherTheme, setOtherTheme] = useState(true);
 
+    let numberPage = 1;
 
-        const getStoreData = async () => {
+        const getStoreTheme = async () => {
             try {
                 const otherThemeGet = await AsyncStorage.getItem('otherTheme');
                 if(otherThemeGet !== null) {
@@ -37,8 +38,13 @@ export const ContextWrapper = ({ children }) => {
                 console.log(e);
             }
         };
+
+        useEffect(() => {
+            getStoreTheme();
+            //clearAllData();
+        }, []);
     
-        const setStoreData = async () => {
+        const setStoreTheme = async () => {
             try {
                 await AsyncStorage.setItem('otherTheme', JSON.stringify(!otherTheme));
                 
@@ -47,35 +53,30 @@ export const ContextWrapper = ({ children }) => {
             }
         };
     
-    const toggleOtherTheme = () => {
-        setStoreData();
-        setOtherTheme(otherTheme => !otherTheme);
-    };
-    const clearAllData = () => {
-        AsyncStorage.getAllKeys()
-            .then(keys => AsyncStorage.multiRemove(keys))
-            .then(() => alert('success'));
-    }
-
-    let numberPage = 1;
-
-    const unsubscribe = NetInfo.addEventListener((state) => {
-        if(state.isConnected === false) {
-            Alert.alert("No internet", "Please check your internet connection and try again", [{
-                text: "Try again", 
-                onPress: () => RNRestart.restart()
-            }])
-        }else if (state.isConnected === true) {
-        
-        }
-    });
+        const toggleOtherTheme = () => {
+            setStoreTheme();
+            setOtherTheme(otherTheme => !otherTheme);
+        };
+        /* const clearAllData = () => {
+            AsyncStorage.getAllKeys()
+                .then(keys => AsyncStorage.multiRemove(keys))
+                .then(() => alert('success'));
+        } */
 
     useEffect(() => {
-        unsubscribe();
-        getStoreData();
-        //clearAllData();
-    }, []);
-
+        const unsubscribe = NetInfo.addEventListener((state) => {
+            if(state.isConnected === false) {
+                Alert.alert("No internet", "Please check your internet connection and try again", [{
+                    text: "Try again", 
+                    onPress: () => RNRestart.restart()
+                }])
+            }
+        });
+        return () => {
+            unsubscribe();
+        }
+    }, [])
+    
         const getDropdownStatus = (e) => {
             setSelectedStatusCharacter(e.label);
 
@@ -93,14 +94,22 @@ export const ContextWrapper = ({ children }) => {
         useEffect(() => {
             getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter).then(newCharacter => {
                 setListCharacters(newCharacter.data.results);
-                setIsLoading(false);
+                if(newCharacter.data.results) {
+                    setIsLoading(false);
+                }
             });
         }, [selectedStatusCharacter, selectedSpeciesCharacter]);
 
         const loadingMoreCharacters = async () => {
+            setIsLoading(true);
             numberPage = (listCharacters.length / 20) + 1;
+
             const newCharacters = await getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter);
             const moreCharacter = newCharacters.data.results;
+
+            if(moreCharacter) {
+                setIsLoading(false);
+            }
             setListCharacters(prevCharacters => [...prevCharacters, ...moreCharacter]);
         };
 

@@ -4,10 +4,12 @@ import { styles } from './loaderStyles';
 
 const Loader = () => {
     return (
-        <View style={styles.loader}>
-			<ActivityIndicator size='large' color='grey'/>
-			<Text>Loading caracters...</Text>
+        <View style={styles.container}>
+        <View style={styles.arapperLoader}>
+			<ActivityIndicator size='large' color='white' style={styles.loader}/>
+			<Text style={styles.text}>Loading...</Text>
 		</View>
+        </View>
     )
 };
 
