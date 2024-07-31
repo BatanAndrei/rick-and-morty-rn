@@ -29,22 +29,16 @@ export const ContextWrapper = ({ children }) => {
     let listCaractersOnline = listCharacters;
 	let listCharactersOffline = listCharacters.slice(-10);
 
-        const getStoreTheme = async () => {
+        const getStore = async (valueTheme, valueOffline) => {
             try {
-                const otherThemeGet = await AsyncStorage.getItem('otherTheme');
-                if(otherThemeGet !== null) {
-                setOtherTheme(JSON.parse(otherThemeGet));
+                const getValueTheme = await AsyncStorage.getItem(valueTheme);
+                if(getValueTheme !== null) {
+                    setOtherTheme(JSON.parse(getValueTheme));
                 }
-            } catch (e) {
-                console.log(e);
-            }
-        };
 
-        const getStoreOffline = async () => {
-            try {
-                const listCharactersOfflineGet = await AsyncStorage.getItem('listCharactersOffline');
-                if(listCharactersOfflineGet !== null) {
-                    setListCharacters(JSON.parse(listCharactersOfflineGet));
+                const getValueOffline = await AsyncStorage.getItem(valueOffline);
+                if(getValueOffline !== null) {
+                    setListCharacters(JSON.parse(getValueOffline));
                 }
             } catch (e) {
                 console.log(e);
@@ -52,30 +46,19 @@ export const ContextWrapper = ({ children }) => {
         };
 
         useEffect(() => {
-            getStoreTheme();
-            getStoreOffline();
+            getStore('otherTheme', 'listCharactersOffline');
         }, []);
     
-        const setStoreTheme = async () => {
+        const setStore = async (keyValue, value) => {
             try {
-                await AsyncStorage.setItem('otherTheme', JSON.stringify(!otherTheme));
-                
-            } catch (e) {
-                console.log(e);
-            }
-        };
-
-        const setStoreOffline = async () => {
-            try {
-                await AsyncStorage.setItem('listCharactersOffline', JSON.stringify(listCharactersOffline));
-                
+                await AsyncStorage.setItem(keyValue, JSON.stringify(value));
             } catch (e) {
                 console.log(e);
             }
         };
     
         const toggleOtherTheme = () => {
-            setStoreTheme();
+            setStore('otherTheme', !otherTheme);
             setOtherTheme(otherTheme => !otherTheme);
         };
     
@@ -108,7 +91,7 @@ export const ContextWrapper = ({ children }) => {
                 setListCharacters(newCharacter.data.results);
                 if(newCharacter.data.results) {
                     setIsLoading(false);
-                    setStoreOffline();
+                    setStore('listCharactersOffline', listCharactersOffline);
                 }
             });
         }, [selectedStatusCharacter, selectedSpeciesCharacter]);
@@ -116,7 +99,7 @@ export const ContextWrapper = ({ children }) => {
         const loadingMoreCharacters = async () => {
             setIsLoading(true);
             numberPage = (listCharacters.length / 20) + 1;
-            setStoreOffline();
+            setStore('listCharactersOffline', listCharactersOffline);
 
             const newCharacters = await getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter);
             const moreCharacter = newCharacters.data.results;
