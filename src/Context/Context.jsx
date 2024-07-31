@@ -1,8 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react"; 
 import { getCharacters } from '../api/getCharacters';
 import NetInfo from "@react-native-community/netinfo";
-import RNRestart from 'react-native-restart';
-import { Alert } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -25,8 +23,11 @@ export const ContextWrapper = ({ children }) => {
     const [selectedStatusCharacter, setSelectedStatusCharacter] = useState('');
     const [selectedSpeciesCharacter, setSelectedSpeciesCharacter] = useState('');
     const [otherTheme, setOtherTheme] = useState(true);
+    const [connectInternet, setConnectInternet] = useState(true);
 
     let numberPage = 1;
+    let listCaractersOnline = listCharacters;
+	let listCharactersOffline = listCharacters.slice(-10);
 
         const getStoreTheme = async () => {
             try {
@@ -39,9 +40,20 @@ export const ContextWrapper = ({ children }) => {
             }
         };
 
+        const getStoreOffline = async () => {
+            try {
+                const listCharactersOfflineGet = await AsyncStorage.getItem('listCharactersOffline');
+                if(listCharactersOfflineGet !== null) {
+                    setListCharacters(JSON.parse(listCharactersOfflineGet));
+                }
+            } catch (e) {
+                console.log(e);
+            }
+        };
+
         useEffect(() => {
             getStoreTheme();
-            //clearAllData();
+            getStoreOffline();
         }, []);
     
         const setStoreTheme = async () => {
@@ -52,30 +64,30 @@ export const ContextWrapper = ({ children }) => {
                 console.log(e);
             }
         };
+
+        const setStoreOffline = async () => {
+            try {
+                await AsyncStorage.setItem('listCharactersOffline', JSON.stringify(listCharactersOffline));
+                
+            } catch (e) {
+                console.log(e);
+            }
+        };
     
         const toggleOtherTheme = () => {
             setStoreTheme();
             setOtherTheme(otherTheme => !otherTheme);
         };
-        /* const clearAllData = () => {
-            AsyncStorage.getAllKeys()
-                .then(keys => AsyncStorage.multiRemove(keys))
-                .then(() => alert('success'));
-        } */
-
-    useEffect(() => {
-        const unsubscribe = NetInfo.addEventListener((state) => {
-            if(state.isConnected === false) {
-                Alert.alert("No internet", "Please check your internet connection and try again", [{
-                    text: "Try again", 
-                    onPress: () => RNRestart.restart()
-                }])
+    
+        useEffect(() =>{
+            const unsubscribe = NetInfo.addEventListener((state) => {
+                setConnectInternet(state.isConnected);
+            });
+            
+            return () => {
+                unsubscribe();
             }
-        });
-        return () => {
-            unsubscribe();
-        }
-    }, [])
+        }, [])
     
         const getDropdownStatus = (e) => {
             setSelectedStatusCharacter(e.label);
@@ -96,6 +108,7 @@ export const ContextWrapper = ({ children }) => {
                 setListCharacters(newCharacter.data.results);
                 if(newCharacter.data.results) {
                     setIsLoading(false);
+                    setStoreOffline();
                 }
             });
         }, [selectedStatusCharacter, selectedSpeciesCharacter]);
@@ -103,6 +116,7 @@ export const ContextWrapper = ({ children }) => {
         const loadingMoreCharacters = async () => {
             setIsLoading(true);
             numberPage = (listCharacters.length / 20) + 1;
+            setStoreOffline();
 
             const newCharacters = await getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter);
             const moreCharacter = newCharacters.data.results;
@@ -113,7 +127,7 @@ export const ContextWrapper = ({ children }) => {
             setListCharacters(prevCharacters => [...prevCharacters, ...moreCharacter]);
         };
 
-    return <Context.Provider value={{ listCharacters, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, toggleOtherTheme, otherTheme }}>
+    return <Context.Provider value={{ listCaractersOnline, listCharactersOffline, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, toggleOtherTheme, otherTheme, connectInternet }}>
                 {children }
             </Context.Provider>
 }

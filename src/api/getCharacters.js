@@ -5,9 +5,7 @@ const characters = axios.create({
     baseURL: `https://rickandmortyapi.com/api/character/`,
 });
 
-
 export const getCharacters = async (numberPage, statusCharacter, speciesCharacter) => { 
-
     try {
             const response = await characters.get(`/?page=${numberPage}&status=${statusCharacter}&species=${speciesCharacter}`);
     
@@ -22,20 +20,19 @@ export const getCharacters = async (numberPage, statusCharacter, speciesCharacte
     }catch(error) {
         if (error.response) {
         
-            const { data, status, headers } = error.response
+            const { data, status, headers } = error.response;
 
             console.error(data);
 
         } else if (error.request) {
             
-            console.error(error.request)
+            console.error(error.request);
         } else {
             
-            console.error(error.message)
+            console.error(error.message);
         }
         
-            console.error(error.config)
-    
-            console.error(error.toJSON())
+            console.error(error.config);
+            console.error(error.toJSON());
         }
     };

@@ -1,17 +1,19 @@
 import { SafeAreaView, View, Text, Image } from 'react-native';
 import { styles } from './detailCharacterStyles';
 import HeaderDetailPage from '../../components/HeaderDetailPage/HeaderDetailPage';
+import AlertNotInternet from '../../components/AlertNotInternet/AlertNotInternet';
 import { useGlobalContext  } from '../../Context/Context';
 
 
 const DetailCharacter = ({ route, navigation }) => {
 
-    const { otherTheme } = useGlobalContext();
+    const { otherTheme, connectInternet } = useGlobalContext();
 
     return (
         <SafeAreaView style={styles.container}>
             <HeaderDetailPage navigation={navigation} nameCharacter={route.params.name}/>
             <View style={otherTheme ? styles.wrapperPageLight : styles.wrapperPageDark}>
+            {connectInternet === false && <AlertNotInternet/>}
             <Image style={styles.avatar} source={{uri: route.params.image}}/>
             <Text style={otherTheme ? styles.textLight : styles.textDark}>Species: {route.params.species}</Text>
             <Text style={otherTheme ? styles.textLight : styles.textDark}>Gender: {route.params.gender}</Text>
