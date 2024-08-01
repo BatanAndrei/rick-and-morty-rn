@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "rick-and-morty-rn",
+    "name": "Rick and Morty",
     "slug": "rick-and-morty-rn",
+    "description": "This application is about the characters from the series Ricky and Morty.",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/iconrim.png",
@@ -9,7 +10,7 @@
     "splash": {
       "image": "./assets/splashrim.png",
       "resizeMode": "contain",
-      "backgroundColor": "black"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true
@@ -18,10 +19,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-iconrim.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.andreibatan.rickandmortyrn"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0f4e4a51-e1d5-4d9b-a498-9277c052fb97"
+      }
     }
   }
 }
