@@ -36,7 +36,6 @@ export const ContextWrapper = ({ children }) => {
                 }
 
                 const getValueOffline = await AsyncStorage.getItem(valueOffline);
-                console.log(getValueOffline)
                 if(getValueOffline !== null) {
                     setListCharactersOffline(JSON.parse(getValueOffline));
                 }

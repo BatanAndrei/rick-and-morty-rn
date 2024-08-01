@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d7ccced4-ce39-4ee7-96f9-4575d13ce155" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Context/Context.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Context/Context.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/AlertNotInternet/AlertNotInternet.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/AlertNotInternet/AlertNotInternet.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/MainPage/MainPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/MainPage/MainPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HeaderDetailPage/HeaderDetailPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HeaderDetailPage/HeaderDetailPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/HeaderDetailPage/headerSetailStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/HeaderDetailPage/headerSetailStyles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/iconback.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images/icons8.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
