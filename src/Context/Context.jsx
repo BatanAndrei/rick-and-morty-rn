@@ -19,16 +19,15 @@ export const useGlobalContext = () => useContext(Context);
 export const ContextWrapper = ({ children }) => {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [listCharacters, setListCharacters] = useState([]);
+    const [listCharactersOnline, setListCharactersOnline] = useState([]);
+    const [listCharactersOffline, setListCharactersOffline] = useState([]);
     const [selectedStatusCharacter, setSelectedStatusCharacter] = useState('');
     const [selectedSpeciesCharacter, setSelectedSpeciesCharacter] = useState('');
     const [otherTheme, setOtherTheme] = useState(true);
     const [connectInternet, setConnectInternet] = useState(true);
 
     let numberPage = 1;
-    let listCaractersOnline = listCharacters;
-	let listCharactersOffline = listCharacters.slice(-10);
-
+    
         const getStore = async (valueTheme, valueOffline) => {
             try {
                 const getValueTheme = await AsyncStorage.getItem(valueTheme);
@@ -37,8 +36,9 @@ export const ContextWrapper = ({ children }) => {
                 }
 
                 const getValueOffline = await AsyncStorage.getItem(valueOffline);
+                console.log(getValueOffline)
                 if(getValueOffline !== null) {
-                    setListCharacters(JSON.parse(getValueOffline));
+                    setListCharactersOffline(JSON.parse(getValueOffline));
                 }
             } catch (e) {
                 console.log(e);
@@ -61,7 +61,7 @@ export const ContextWrapper = ({ children }) => {
             setStore('otherTheme', !otherTheme);
             setOtherTheme(otherTheme => !otherTheme);
         };
-    
+        
         useEffect(() =>{
             const unsubscribe = NetInfo.addEventListener((state) => {
                 setConnectInternet(state.isConnected);
@@ -88,29 +88,35 @@ export const ContextWrapper = ({ children }) => {
 
         useEffect(() => {
             getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter).then(newCharacter => {
-                setListCharacters(newCharacter.data.results);
-                if(newCharacter.data.results) {
+                let resultGet = newCharacter.data.results;
+                setListCharactersOnline(resultGet);
+
+                if(resultGet) {
+                    let resultGetLastTen = resultGet.slice(-10);
+                    setListCharactersOffline(resultGetLastTen);
+                    setStore('listCharactersOffline', resultGetLastTen);
                     setIsLoading(false);
-                    setStore('listCharactersOffline', listCharactersOffline);
                 }
             });
         }, [selectedStatusCharacter, selectedSpeciesCharacter]);
 
         const loadingMoreCharacters = async () => {
             setIsLoading(true);
-            numberPage = (listCharacters.length / 20) + 1;
-            setStore('listCharactersOffline', listCharactersOffline);
+            numberPage = (listCharactersOnline.length / 20) + 1;
 
             const newCharacters = await getCharacters(numberPage, selectedStatusCharacter, selectedSpeciesCharacter);
             const moreCharacter = newCharacters.data.results;
+            const moreCharacterLastTen = moreCharacter.slice(-10);
 
             if(moreCharacter) {
                 setIsLoading(false);
             }
-            setListCharacters(prevCharacters => [...prevCharacters, ...moreCharacter]);
+            setListCharactersOnline(prevCharacters => [...prevCharacters, ...moreCharacter]);
+            setListCharactersOffline(moreCharacterLastTen);
+            setStore('listCharactersOffline', moreCharacterLastTen);
         };
 
-    return <Context.Provider value={{ listCaractersOnline, listCharactersOffline, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, toggleOtherTheme, otherTheme, connectInternet }}>
+    return <Context.Provider value={{ listCharactersOnline, listCharactersOffline, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, toggleOtherTheme, otherTheme, connectInternet }}>
                 {children }
             </Context.Provider>
 }

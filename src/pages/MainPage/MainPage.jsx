@@ -12,9 +12,9 @@ import { dataStatusCharacter, dataSpeciesCharacter, labelForDropdownStatus, labe
 
 const MainPage = ({ navigation }) => {
 
-	const { listCaractersOnline, listCharactersOffline, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, otherTheme, connectInternet } = useGlobalContext();
+	const { listCharactersOnline, listCharactersOffline, isLoading, getDropdownStatus, getDropdownSpecies, loadingMoreCharacters, otherTheme, connectInternet } = useGlobalContext();
 
-	let listCharactersOffOrOnline = (connectInternet === false) ? listCharactersOffline : listCaractersOnline;
+	let listCharactersOffOrOnline = (connectInternet === false) ? listCharactersOffline : listCharactersOnline;
 
 	return (
 		<SafeAreaView style={styles.container}>

@@ -6,9 +6,9 @@ import RNRestart from 'react-native-restart';
 const AlertNotInternet = () => {
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Please check your internet connection and try again!</Text>
+            <Text style={styles.text}>Please check your internet connection and try again</Text>
             <Pressable style={styles.button} onPress={() => RNRestart.restart()}>
-                <Text style={styles.text}>Try again!</Text>
+                <Text style={styles.text}>Try again</Text>
             </Pressable>
         </View>
     )
